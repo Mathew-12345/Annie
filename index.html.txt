@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Un Abrazo para Lotso!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="container">
+        <img id="lotso" src="lotso-inicial.png" alt="Lotso pidiendo abrazos">
+        <p id="message">¡Hola Annie! Dale a Lotso muchos abrazos (clics) para hacerlo feliz.</p>
+        <div id="click-count">Abrazos: 0</div>
+    </div>
+
+    <div id="confetti-explosion"></div> <audio id="hug-sound" src="hug-sound.mp3" preload="auto"></audio> <audio id="celebration-sound" src="celebration-sound.mp3" preload="auto"></audio> <script src="script.js"></script>
+</body>
+</html>

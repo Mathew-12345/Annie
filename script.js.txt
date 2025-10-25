@@ -1,0 +1,109 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const lotso = document.getElementById('lotso');
+    const message = document.getElementById('message');
+    const clickCountDisplay = document.getElementById('click-count');
+    const container = document.getElementById('container');
+    const confettiExplosion = document.getElementById('confetti-explosion');
+
+    // Opcional: Cargar sonidos (si incluyes los archivos .mp3)
+    // const hugSound = document.getElementById('hug-sound');
+    // const celebrationSound = document.getElementById('celebration-sound');
+
+    let clicks = 0;
+    const maxClicks = 10; // Número de clics para el efecto final
+
+    const lotsoStates = [
+        'lotso-inicial.png',
+        'lotso-intermedio.png',
+        'lotso-contento.png'
+    ];
+
+    lotso.addEventListener('click', () => {
+        if (clicks >= maxClicks) {
+            return; // No hacer nada si ya llegamos al estado final
+        }
+
+        clicks++;
+        clickCountDisplay.textContent = `Abrazos: ${clicks}`;
+        lotso.classList.add('clicked'); // Para la animación de "salto"
+        // if (hugSound) hugSound.play(); // Opcional: Reproducir sonido de abrazo
+
+        setTimeout(() => {
+            lotso.classList.remove('clicked');
+        }, 100);
+
+        // Cambiar la imagen de Lotso según los clics
+        if (clicks < maxClicks / 2) {
+            lotso.src = lotsoStates[0]; // Inicial (más veces)
+        } else if (clicks < maxClicks - 2) { // Un poco antes de terminar
+            lotso.src = lotsoStates[1]; // Intermedio
+            message.textContent = `¡Ya casi Annie! Lotso está muy contento con tus abrazos.`;
+        } else if (clicks < maxClicks) {
+            lotso.src = lotsoStates[2]; // Contento
+            message.textContent = `¡Unos pocos abrazos más y Lotso será el oso más feliz!`;
+        }
+
+        if (clicks === maxClicks) {
+            triggerCelebration();
+        }
+    });
+
+    function triggerCelebration() {
+        // if (celebrationSound) celebrationSound.play(); // Opcional: Sonido de celebración
+
+        // Ocultar mensaje y contador
+        message.style.opacity = 0;
+        clickCountDisplay.style.opacity = 0;
+        lotso.style.cursor = 'default'; // Quitar cursor de pointer
+
+        // Animación de brillo y confeti
+        confettiExplosion.classList.add('active');
+        container.classList.add('final-state'); // Oculta elementos iniciales
+
+        // Generar confeti y chispas
+        for (let i = 0; i < 100; i++) {
+            createConfetti();
+        }
+
+        setTimeout(() => {
+            // Eliminar confeti
+            confettiExplosion.classList.remove('active');
+            confettiExplosion.innerHTML = ''; // Limpiar los elementos de confeti
+
+            // Cambiar a la imagen final de Lotso
+            lotso.src = 'lotso-final.png';
+            lotso.style.width = '400px'; // Un poco más grande para el final
+            lotso.style.position = 'relative';
+            lotso.style.zIndex = '1'; // Para que el texto final esté encima si es necesario
+
+            // Mostrar el mensaje final con la imagen de fondo de Lotso
+            showFinalMessage();
+        }, 3000); // Duración de la explosión (3 segundos)
+    }
+
+    function createConfetti() {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        const types = ['pink', 'blue', 'silver', 'sparkle'];
+        confetti.classList.add(types[Math.floor(Math.random() * types.length)]);
+
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.animationDuration = Math.random() * 2 + 2 + 's'; // 2-4 seconds
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        confettiExplosion.appendChild(confetti);
+    }
+
+    function showFinalMessage() {
+        const finalMessageDiv = document.createElement('div');
+        finalMessageDiv.id = 'lotso-final-message';
+        finalMessageDiv.innerHTML = `
+            <span>¡Feliz cumpleaños Annie!</span>
+            <span class="small-text">Tu enamorado siempre te tiene presente y te ama con todo su corazon</span>
+        `;
+        document.body.appendChild(finalMessageDiv);
+
+        setTimeout(() => {
+            finalMessageDiv.classList.add('active');
+        }, 100); // Pequeño retraso para la transición de opacidad
+    }
+});
